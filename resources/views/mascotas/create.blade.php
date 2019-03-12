@@ -6,6 +6,7 @@
     <form action="{{route('mascotas.store')}}" method="post">
         @csrf
         <label>Especie</label>
+        <div class="form-group">
         <select name="especie" required>
             <option disabled selected value="">Elige una especie</option>
             @foreach($especies as $especie)
@@ -14,15 +15,25 @@
                 </option>
             @endforeach
         </select>
+        </div>
+
         <br/>
         <label>Nombre</label>
+        <div class="form-group">
         <input required type="text" name="nombre" placeholder="Nombre de la mascota">
+        </div>
         <br/>
+        
         <label>Precio</label>
+        <div class="form-group">
         <input required type="text" name="precio" placeholder="Precio en pesos $$">
+        </div>
         <br/>
+        
         <label>Fecha de nacimiento</label>
+        <div class="form-group">
         <input required type="date" name="nacimiento" >
+        </div>
         <br/>
        
         
@@ -39,7 +50,7 @@
         <div class="form-group">
             <label class="control-label">Estado</label>
             <select class="form-control" name="estado" id="slcEstado" required>
-                <option selected disabled value="">Elige un stado</option>
+                <option selected disabled value="">Elige un Estado</option>
             </select>
         </div>
 
@@ -52,15 +63,23 @@
 
 @section('scripts')
     <script>
-    function $doChangePais(event) {
-        $.get("/api/estados/" + $("#slPais").val(), function(data) {
+    function doChangePais(event) {
+        $.get("/api/estados/" + $("#slcPais").val(), function(data) {
             console.log(data);
+            $("#slcEstado").empty();
+            $("#slcEstado").append(
+                '<option selected disabled value="">Elige un Estado</option>');
+            for(var i=0; i<data.length; i++) {
+                $("#slcEstado").append('<option value="' + data[i].id + '">' +
+                data[i].nombre + '</option>'
+                );
+            }
         })
     }
 
 
     $(function() {
-        $('#slcPais').change($doChangePais);
+        $('#slcPais').change(doChangePais);
     })
     </script>
 @endsection
